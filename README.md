@@ -20,7 +20,7 @@ Built with Tauri 2.0 + React + TypeScript.
 
 ## Installation
 
-Download the latest release from [Releases](https://github.com/yourusername/zen-rest/releases).
+Download the latest release from [Releases](https://github.com/neo8818/zen-rest/releases).
 
 - **Windows**: Download `.exe` or `.msi`
 - **macOS**: Download `.dmg`

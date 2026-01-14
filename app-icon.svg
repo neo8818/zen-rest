@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e293b"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#60a5fa"/>
+      <stop offset="100%" style="stop-color:#c084fc"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="512" height="512" rx="100" fill="url(#bg)"/>
+  <!-- Outer ring -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="url(#ring)" stroke-width="24" stroke-linecap="round"/>
+  <!-- Inner glow -->
+  <circle cx="256" cy="256" r="120" fill="none" stroke="#334155" stroke-width="16"/>
+  <!-- Zen symbol (simplified) -->
+  <text x="256" y="280" text-anchor="middle" font-family="Arial" font-size="120" font-weight="bold" fill="white">禅</text>
+</svg>

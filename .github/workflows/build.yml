@@ -31,15 +31,18 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install Rust
-        uses: dtolnay/rust-action@stable
-        with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+      - name: Install Rust (stable)
+        uses: dtolnay/rust-toolchain@stable
 
-      - name: Install dependencies (macOS)
+      - name: Add macOS targets
         if: matrix.platform == 'macos-latest'
         run: |
           rustup target add aarch64-apple-darwin x86_64-apple-darwin
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
 
       - name: Install frontend dependencies
         run: npm ci
@@ -52,9 +55,6 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: 'Zen Rest ${{ github.ref_name }}'
           releaseBody: |
-            ## What's New
-            See the commits for details.
-            
             ## Downloads
             - **Windows**: `.exe` or `.msi`
             - **macOS**: `.dmg` (Universal - works on Intel & Apple Silicon)

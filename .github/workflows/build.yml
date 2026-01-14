@@ -1,16 +1,15 @@
-name: Build Tauri App
+name: Build and Release
 
 on:
   push:
-    branches: [main, master]
     tags:
       - 'v*'
-  pull_request:
-    branches: [main, master]
   workflow_dispatch:
 
 jobs:
   build:
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
@@ -31,7 +30,6 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: zen-rest/package-lock.json
 
       - name: Install Rust
         uses: dtolnay/rust-action@stable
@@ -44,7 +42,6 @@ jobs:
           rustup target add aarch64-apple-darwin x86_64-apple-darwin
 
       - name: Install frontend dependencies
-        working-directory: zen-rest
         run: npm ci
 
       - name: Build Tauri App
@@ -52,18 +49,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: zen-rest
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Zen Rest ${{ github.ref_name }}'
+          releaseBody: |
+            ## What's New
+            See the commits for details.
+            
+            ## Downloads
+            - **Windows**: `.exe` or `.msi`
+            - **macOS**: `.dmg` (Universal - works on Intel & Apple Silicon)
+          releaseDraft: false
+          prerelease: false
           args: ${{ matrix.args }}
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-${{ matrix.platform }}
-          path: |
-            zen-rest/src-tauri/target/release/bundle/**/*.dmg
-            zen-rest/src-tauri/target/release/bundle/**/*.app
-            zen-rest/src-tauri/target/release/bundle/**/*.exe
-            zen-rest/src-tauri/target/release/bundle/**/*.msi
-            zen-rest/src-tauri/target/universal-apple-darwin/release/bundle/**/*.dmg
-            zen-rest/src-tauri/target/universal-apple-darwin/release/bundle/**/*.app
-          retention-days: 7
